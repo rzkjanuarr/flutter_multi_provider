@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_multi_provider/height_provider.dart';
+import 'package:flutter_multi_provider/weight_provider.dart';
+import 'package:provider/provider.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -11,25 +14,37 @@ class HomePage extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text('Your Weight (Kg)', style: TextStyle(fontSize: 20)),
-            Slider(
-              min: 1,
-              max: 100,
-              value: 40,
-              onChanged: (newValue) {
-                print('Berat : $newValue');
-              },
+            Consumer<WeightProvider>(
+              builder: (context, WP, _) => Slider(
+                min: 1,
+                max: 100,
+                divisions: 100,
+                label: WP.weight.round().toString(),
+                value: WP.weight,
+                onChanged: (newValue) {
+                  newValue = newValue.roundToDouble();
+                  print('Berat : $newValue');
+                  WP.weight = newValue;
+                },
+              ),
             ),
             SizedBox(height: 20),
             Text('Your Height (cm)', style: TextStyle(fontSize: 20)),
-            Slider(
-              min: 1,
-              max: 200,
-              value: 100,
-              activeColor: Colors.pink,
-              inactiveColor: Colors.pink.withOpacity(0.20),
-              onChanged: (newValue) {
-                print('Tinggi : $newValue');
-              },
+            Consumer<HeightProvider>(
+              builder: (context, HP, _) => Slider(
+                min: 1,
+                max: 200,
+                divisions: 100,
+                label: HP.height.round.toString(),
+                value: HP.height,
+                activeColor: Colors.pink,
+                inactiveColor: Colors.pink.withOpacity(0.20),
+                onChanged: (newValue) {
+                  newValue = newValue.roundToDouble();
+                  print('Tinggi : $newValue');
+                  HP.height = newValue;
+                },
+              ),
             ),
             SizedBox(height: 20),
             Text(
